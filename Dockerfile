@@ -9,7 +9,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN pip install -r requirements.txt --no-cache-dir
+RUN pip install -r requirements.txt --no-cache-dir --prefer-binary
 
 EXPOSE 5000
 
