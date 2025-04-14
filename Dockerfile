@@ -13,4 +13,4 @@ RUN pip install -r requirements.txt --no-cache-dir --prefer-binary
 
 EXPOSE 5000
 
-CMD ["python", "camera_stream.py"]
+CMD ["python", "app.py"]
