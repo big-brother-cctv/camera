@@ -1,14 +1,16 @@
 import cv2
+import time
 from flask import Flask, Response
 
 app = Flask(__name__)
 
 CAMERA_SOURCE = 0
-
 camera = cv2.VideoCapture(CAMERA_SOURCE)
 
+# Ajustes
 camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+camera.set(cv2.CAP_PROP_FPS, 30)
 
 if not camera.isOpened():
     print("❌ ERROR: Camera not found")
@@ -21,18 +23,16 @@ def generate_frames():
         if not success:
             break
 
-        # Redimensionar el frame por si acaso
         frame = cv2.resize(frame, (640, 480))
 
-        # Codificar a JPEG
-        ret, buffer = cv2.imencode('.jpg', frame)
+        ret, buffer = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
         if not ret:
             continue
 
-        frame_bytes = buffer.tobytes()
-
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+               b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
+
+        time.sleep(0.03)
 
 @app.route('/video_feed')
 def video_feed():
