@@ -15,18 +15,19 @@ while [ ! -e "$CAMERA_DEVICE" ]; do sleep 1; done
 
 echo "Streaming $CAMERA_DEVICE in $RTSP_URL with resolution $RESOLUTION and $FRAMERATE fps"
 
+# Camera rotation
 case "$ROTATE" in
   90)
-    ROTATE_FILTER="-vf \"transpose=1\""  # Rotate 90º
+    ROTATE_FILTER="-vf transpose=1"  # 90º
     ;;
   180)
-    ROTATE_FILTER="-vf \"transpose=2,transpose=2\""  # Rotate 180º
+    ROTATE_FILTER="-vf transpose=2,transpose=2"  # 180º
     ;;
   270)
-    ROTATE_FILTER="-vf \"transpose=2\""  # Rotate 270º
+    ROTATE_FILTER="-vf transpose=2"  # 270º
     ;;
   *)
-    ROTATE_FILTER="" # No rotation
+    ROTATE_FILTER=""
     ;;
 esac
 
