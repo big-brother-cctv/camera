@@ -13,6 +13,7 @@ while [ ! -e "$CAMERA_DEVICE" ]; do sleep 1; done
 
 echo "Streaming $CAMERA_DEVICE in $RTSP_URL with resolution $RESOLUTION and $FRAMERATE fps"
 
-ffmpeg -f v4l2 -framerate "$FRAMERATE" -video_size "$RESOLUTION" -i "$CAMERA_DEVICE" \
+ffmpeg -re -f v4l2 -framerate "$FRAMERATE" -video_size "$RESOLUTION" -i "$CAMERA_DEVICE" \
   -vcodec "$VIDEO_CODEC" -preset "$PRESET" -tune "$TUNE" \
   -f rtsp "$RTSP_URL"
+
