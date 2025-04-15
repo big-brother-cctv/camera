@@ -1,12 +1,18 @@
 #!/bin/bash
 
-echo "Waiting for /dev/video0..."
-while [ ! -e /dev/video0 ]; do sleep 1; done
+CAMERA_DEVICE="${CAMERA_DEVICE:-/dev/video0}"
+RESOLUTION="${RESOLUTION:-640x480}"
+FRAMERATE="${FRAMERATE:-25}"
+RTSP_URL="${RTSP_URL:-rtsp://mediamtx.default.svc.cluster.local:8554/mystream}"
+VIDEO_CODEC="${VIDEO_CODEC:-libx264}"
+PRESET="${PRESET:-ultrafast}"
+TUNE="${TUNE:-zerolatency}"
 
-RTSP_URL=${RTSP_URL:-rtsp://mediamtx.default.svc.cluster.local:8554/mystream}
+echo "Waiting for $CAMERA_DEVICE..."
+while [ ! -e "$CAMERA_DEVICE" ]; do sleep 1; done
 
-echo "Starting stream in $RTSP_URL"
+echo "Streaming $CAMERA_DEVICE in $RTSP_URL with resolution $RESOLUTION and $FRAMERATE fps"
 
-ffmpeg -f v4l2 -framerate 25 -video_size 640x480 -i /dev/video0 \
-  -vcodec libx264 -preset ultrafast -tune zerolatency \
+ffmpeg -f v4l2 -framerate "$FRAMERATE" -video_size "$RESOLUTION" -i "$CAMERA_DEVICE" \
+  -vcodec "$VIDEO_CODEC" -preset "$PRESET" -tune "$TUNE" \
   -f rtsp "$RTSP_URL"
