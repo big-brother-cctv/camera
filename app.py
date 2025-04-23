@@ -4,10 +4,12 @@ import requests
 import subprocess
 
 CONFIG_URL = os.getenv("CONFIG_URL", "http://api:8080/api/cameras/1")
+INTERNAL_TOKEN = os.getenv("INTERNAL_API_TOKEN", "internal-token-dev")
 
 print(f"Fetching camera config from {CONFIG_URL}...")
 try:
-    config = requests.get(CONFIG_URL).json()
+    headers = {"Authorization": f"Bearer {INTERNAL_TOKEN}"}
+    config = requests.get(CONFIG_URL, headers=headers).json()
 except Exception as e:
     print(f"Failed to fetch config: {e}")
     exit(1)
