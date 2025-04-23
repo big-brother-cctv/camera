@@ -3,9 +3,12 @@ FROM debian:bullseye-slim
 RUN apt-get update && apt-get install -y \
     ffmpeg \
     v4l-utils \
+    python3 \
+    python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
+COPY requirements.txt /requirements.txt
+RUN pip3 install -r /requirements.txt
 
-CMD ["/start.sh"]
+COPY app.py /app.py
+CMD ["python3", "/app.py"]
