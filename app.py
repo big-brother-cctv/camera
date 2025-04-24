@@ -5,14 +5,20 @@ import subprocess
 import signal
 import copy
 
-CONFIG_URL = os.getenv("CONFIG_URL", "http://api:8080/api/cameras/1")
+CAMERA_NAME = os.getenv("CAMERA_NAME", "default-camera")
+CONFIG_URL = os.getenv("CONFIG_URL", f"http://api:8080/api/cameras/search?name={CAMERA_NAME}")
 INTERNAL_TOKEN = os.getenv("INTERNAL_TOKEN", "internal-token-dev")
 POLL_INTERVAL = int(os.getenv("CONFIG_POLL_INTERVAL", 10))
 
 def fetch_config():
     headers = {"Authorization": f"Bearer {INTERNAL_TOKEN}"}
     try:
-        config = requests.get(CONFIG_URL, headers=headers).json()
+        resp = requests.get(CONFIG_URL, headers=headers)
+        configs = resp.json()
+        if not configs:
+            print(f"No config found for camera name '{CAMERA_NAME}'")
+            return None
+        config = configs[0]
     except Exception as e:
         print(f"Failed to fetch config: {e}")
         return None
@@ -22,7 +28,7 @@ def build_cmd(config):
     device = config.get("device", "/dev/video0")
     resolution = config.get("resolution", "640x480")
     fps = str(config.get("fps", 25))
-    postUrl = config.get("postUrl", "rtsp://mediamtx.default.svc.cluster.local:8554/mystream")
+    postUrl = f"rtsp://mediamtx.default.svc.cluster.local:8554/{CAMERA_NAME}"
     codec = config.get("codec", "libx264")
     preset = config.get("preset", "ultrafast")
     tune = config.get("tune", "zerolatency")
