@@ -6,7 +6,8 @@ import signal
 import copy
 
 CAMERA_NAME = os.getenv("CAMERA_NAME", "default-camera")
-API_URL = os.getenv("API_URL", f"http://api:8080/api/cameras")
+API_URL = os.getenv("API_URL", f"http://localhost:8080/api/cameras")
+MEDIAMTX_URL = os.getenv("MEDIAMTX_URL", "rtsp://mediamtx.local")
 INTERNAL_TOKEN = os.getenv("INTERNAL_TOKEN", "internal-token-dev")
 POLL_INTERVAL = int(os.getenv("CONFIG_POLL_INTERVAL", 10))
 
@@ -30,7 +31,7 @@ def build_cmd(config):
     device = config.get("device", "/dev/video0")
     resolution = config.get("resolution", "640x480")
     fps = str(config.get("fps", 25))
-    postUrl = f"rtsp://mediamtx.default.svc.cluster.local:8554/{CAMERA_NAME}"
+    postUrl = f"{MEDIAMTX_URL}/{CAMERA_NAME}"
     codec = config.get("codec", "libx264")
     preset = config.get("preset", "ultrafast")
     tune = config.get("tune", "zerolatency")
