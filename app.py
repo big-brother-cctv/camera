@@ -4,7 +4,7 @@ import requests
 import subprocess
 
 CONFIG_URL = os.getenv("CONFIG_URL", "http://api:8080/api/cameras/1")
-INTERNAL_TOKEN = os.getenv("INTERNAL_API_TOKEN", "internal-token-dev")
+INTERNAL_TOKEN = os.getenv("INTERNAL_TOKEN", "internal-token-dev")
 
 print(f"Fetching camera config from {CONFIG_URL}...")
 try:
