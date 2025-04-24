@@ -6,14 +6,16 @@ import signal
 import copy
 
 CAMERA_NAME = os.getenv("CAMERA_NAME", "default-camera")
-CONFIG_URL = os.getenv("CONFIG_URL", f"http://api:8080/api/cameras/search?name={CAMERA_NAME}")
+API_URL = os.getenv("API_URL", f"http://api:8080/api/cameras")
 INTERNAL_TOKEN = os.getenv("INTERNAL_TOKEN", "internal-token-dev")
 POLL_INTERVAL = int(os.getenv("CONFIG_POLL_INTERVAL", 10))
+
+config_url = f"{API_URL}/search?name={CAMERA_NAME}"
 
 def fetch_config():
     headers = {"Authorization": f"Bearer {INTERNAL_TOKEN}"}
     try:
-        resp = requests.get(CONFIG_URL, headers=headers)
+        resp = requests.get(config_url, headers=headers)
         configs = resp.json()
         if not configs:
             print(f"No config found for camera name '{CAMERA_NAME}'")
