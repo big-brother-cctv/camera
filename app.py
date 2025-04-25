@@ -6,12 +6,23 @@ import signal
 import copy
 
 CAMERA_NAME = os.getenv("CAMERA_NAME", "default-camera")
-API_URL = os.getenv("API_URL", f"http://localhost:8080/api/cameras")
+API_URL = os.getenv("API_URL", f"http://localhost:8080/api")
 MEDIAMTX_URL = os.getenv("MEDIAMTX_URL", "rtsp://mediamtx.local")
 INTERNAL_TOKEN = os.getenv("INTERNAL_TOKEN", "internal-token-dev")
 POLL_INTERVAL = int(os.getenv("CONFIG_POLL_INTERVAL", 10))
 
-config_url = f"{API_URL}/search?name={CAMERA_NAME}"
+config_url = f"{API_URL}/cameras/search?name={CAMERA_NAME}"
+
+def register_camera(default_config):
+    headers = {"Authorization": f"Bearer {INTERNAL_TOKEN}"}
+    try:
+        resp = requests.post(f"{API_URL}/cameras", json=default_config, headers=headers)
+        if resp.status_code == 201:
+            print(f"Camera '{CAMERA_NAME}' registered with default config.")
+        else:
+            print(f"Failed to register camera: {resp.status_code} {resp.text}")
+    except Exception as e:
+        print(f"Exception during camera registration: {e}")
 
 def fetch_config():
     headers = {"Authorization": f"Bearer {INTERNAL_TOKEN}"}
@@ -73,9 +84,23 @@ def main():
     last_config = None
     ffmpeg_proc = None
 
+    default_config = {
+        "name": CAMERA_NAME,
+        "device": "/dev/video0",
+        "resolution": "640x480",
+        "fps": 25,
+        "codec": "libx264",
+        "preset": "ultrafast",
+        "tune": "zerolatency",
+        "buffer": "1000000",
+        "rotation": 0
+    }
+
     while True:
         config = fetch_config()
         if not config:
+            print("No config found, registering camera with default config...")
+            register_camera(default_config)
             print("Retrying config fetch in 5 seconds...")
             time.sleep(5)
             continue
