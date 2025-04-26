@@ -12,5 +12,5 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt /requirements.txt
 RUN pip3 install -r /requirements.txt
 
-COPY /src .
-CMD ["python3", "src/app.py"]
+COPY src .
+CMD ["python3", "app.py"]
