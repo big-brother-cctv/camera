@@ -58,7 +58,7 @@ def build_cmd(config):
         cmd += [
             "-re", "-f", "lavfi",
             "-i", f"testsrc=size={resolution}:rate={fps}",
-            "-vcodec", "libx264", "-preset", preset, "-tune", tune
+            "-vcodec", "libx264", "-pix_fmt", "yuv420p", "-preset", preset, "-tune", tune
         ]
 
     # 2. IP Camera over RTSP
