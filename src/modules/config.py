@@ -63,5 +63,30 @@ def configs_equal(a, b):
     Returns:
         bool: True if configurations are equal, False otherwise.
     """
-    keys = ["device", "resolution", "fps", "postUrl", "codec", "preset", "tune", "buffer", "rotation"]
+    keys = ["sourceType", "sourceUrl", "device", "resolution", "fps", "postUrl", "codec", "preset", "tune", "buffer", "rotation"]
     return all(a.get(k) == b.get(k) for k in keys)
+
+def send_heartbeat(status_data):
+    """
+    Send periodic heartbeat to the Big Brother CCTV API.
+    Can auto-register the camera and synchronize configuration.
+
+    Args:
+        status_data (dict): Telemetry and identification data.
+
+    Returns:
+        dict or None: Updated configuration from API if successful.
+    """
+    url = f"{API_URL}/cameras/heartbeat"
+    headers = {"Authorization": f"Bearer {INTERNAL_TOKEN}"}
+    try:
+        resp = requests.post(url, json=status_data, headers=headers, timeout=5)
+        if resp.status_code == 200:
+            return resp.json()
+        else:
+            print(f"[Heartbeat] Error {resp.status_code}: {resp.text}")
+            return None
+    except Exception as e:
+        print(f"[Heartbeat] Fallo al contactar API: {e}")
+        return None
+
