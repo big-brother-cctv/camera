@@ -6,7 +6,7 @@ def parse_requirements(filename):
 
 setup(
     name="big-brother-camera",
-    version="1.5.0",
+    version="1.5.1",
     description="Big Brother CCTV camera microservice.",
     author="r-dvl",
     packages=find_packages(where="src"),
