@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/big-brother-cctv/camera/compare/v1.5.1...v1.5.2) (2026-10-19)
+
+
+### Documentation
+
+* rewrite camera README with detailed edge ingest and usage guide ([4c2de44](https://github.com/big-brother-cctv/camera/commit/4c2de4453a8297cdc0e719e14353e3c275aae0ea))
+
 ## [1.5.1](https://github.com/big-brother-cctv/camera/compare/v1.5.0...v1.5.1) (2026-10-16)
 
 
