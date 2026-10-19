@@ -37,7 +37,7 @@ Big Brother CCTV soporta múltiples topologías de streaming:
 | `MEDIAMTX_URL` | URL RTSP del servidor de medios MediaMTX | `rtsp://mediamtx:8554` |
 | `VIDEO_DEVICE` | Ruta del dispositivo local de vídeo | `/dev/video0` |
 | `RESOLUTION` | Resolución de codificación de salida | `1280x720` |
-| `FPS` | Tasa de fotogramas por segundo | `25` |
+| `FPS` | Tasa de fotogramas por segundo | `30` |
 | `CONFIG_POLL_INTERVAL`| Intervalo de consulta de configuración a la API (segundos) | `10` |
 
 ---

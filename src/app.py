@@ -27,7 +27,7 @@ def main():
         "connectionMode": CONNECTION_MODE,
         "device": DEFAULT_DEVICE,
         "resolution": os.getenv("RESOLUTION", "640x480"),
-        "fps": int(os.getenv("FPS", 25)),
+        "fps": int(os.getenv("FPS", 30)),
         "codec": "libx264",
         "preset": "ultrafast",
         "tune": "zerolatency",

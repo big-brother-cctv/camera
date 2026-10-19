@@ -23,7 +23,7 @@ def build_cmd(config):
     source_url = config.get("sourceUrl", "")
     device = config.get("device", "/dev/video0")
     resolution = config.get("resolution", "640x480")
-    fps = str(config.get("fps", 25))
+    fps = str(config.get("fps", 30))
     camera_name = config.get("name", CAMERA_NAME)
     postUrl = f"{MEDIAMTX_URL}/{camera_name}"
     codec = config.get("codec", "libx264")
