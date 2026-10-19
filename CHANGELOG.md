@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/big-brother-cctv/camera/compare/v1.5.2...v1.6.0) (2026-10-19)
+
+
+### Features
+
+* update default frame rate (FPS) from 25 to 30 across configuration and application modules ([0eda7c0](https://github.com/big-brother-cctv/camera/commit/0eda7c03614e4e5e6e7710dd6385add19b5a1e98))
+
 ## [1.5.2](https://github.com/big-brother-cctv/camera/compare/v1.5.1...v1.5.2) (2026-10-19)
 
 
