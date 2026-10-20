@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/big-brother-cctv/camera/compare/v1.6.0...v1.6.1) (2026-10-20)
+
+
+### Bug Fixes
+
+* update release-please action owner to googleapis in release workflow ([64ce23e](https://github.com/big-brother-cctv/camera/commit/64ce23e427adf871f7541b1ecdbfd227f6f7c4b9))
+
 ## [1.6.0](https://github.com/big-brother-cctv/camera/compare/v1.5.2...v1.6.0) (2026-10-19)
 
 
