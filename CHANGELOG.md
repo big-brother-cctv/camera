@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.6.1](https://github.com/big-brother-cctv/camera/compare/v1.6.0...v1.6.1) (2026-11-18)
+
+
+### Bug Fixes
+
+* do not crash on empty rotation/fps and add HTTP timeouts ([7cfd225](https://github.com/big-brother-cctv/camera/commit/7cfd2258844262a05ffa00b46141b83180a78def))
+* do not crash on empty rotation/fps and add HTTP timeouts ([a52308b](https://github.com/big-brother-cctv/camera/commit/a52308b4d12b49a72f2bb74601a93e4a60f4d5a4))
+* update release-please action owner to googleapis in release workflow ([64ce23e](https://github.com/big-brother-cctv/camera/commit/64ce23e427adf871f7541b1ecdbfd227f6f7c4b9))
+
 ## [1.6.0](https://github.com/big-brother-cctv/camera/compare/v1.5.2...v1.6.0) (2026-10-19)
 
 
