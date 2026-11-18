@@ -33,8 +33,8 @@ Big Brother CCTV soporta múltiples topologías de streaming:
 |---|---|---|
 | `CAMERA_NAME` | Identificador único de la cámara en el sistema | `default-camera` |
 | `API_URL` | URL base de la API Core | `http://localhost:8080/api` |
-| `INTERNAL_TOKEN` | Token secreto para autenticación de agentes internos | `internal-token-pro` |
-| `MEDIAMTX_URL` | URL RTSP del servidor de medios MediaMTX | `rtsp://mediamtx:8554` |
+| `INTERNAL_TOKEN` | **Obligatorio.** Token interno de la API (Secret `api-secrets`) | — |
+| `MEDIAMTX_URL` | URL RTSP base de MediaMTX **con credenciales de publicación** (`rtsp://publisher:<MEDIA_PUBLISH_TOKEN>@host:8554`); el agente añade `/<CAMERA_NAME>` | `rtsp://mediamtx.local` |
 | `VIDEO_DEVICE` | Ruta del dispositivo local de vídeo | `/dev/video0` |
 | `RESOLUTION` | Resolución de codificación de salida | `1280x720` |
 | `FPS` | Tasa de fotogramas por segundo | `30` |
@@ -62,7 +62,7 @@ Big Brother CCTV soporta múltiples topologías de streaming:
    ```bash
    CAMERA_NAME="salon-cctv" \
    API_URL="http://192.168.1.100:8080/api" \
-   MEDIAMTX_URL="rtsp://192.168.1.100:8554" \
+   MEDIAMTX_URL="rtsp://publisher:<clave>@192.168.1.100:8554" \
    python src/app.py
    ```
 
@@ -72,8 +72,8 @@ docker run -d --restart=unless-stopped \
   --device=/dev/video0:/dev/video0 \
   -e CAMERA_NAME="webcam-local" \
   -e API_URL="http://192.168.1.100:8080/api" \
-  -e INTERNAL_TOKEN="internal-token-pro" \
-  -e MEDIAMTX_URL="rtsp://192.168.1.100:8554" \
+  -e INTERNAL_TOKEN="<INTERNAL_TOKEN de la API>" \
+  -e MEDIAMTX_URL="rtsp://publisher:<clave>@192.168.1.100:8554" \
   --name bigbrother-camera \
   ghcr.io/big-brother-cctv/camera:latest
 ```

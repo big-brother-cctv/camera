@@ -7,9 +7,10 @@ import requests
 
 CAMERA_NAME = os.getenv("CAMERA_NAME", "default-camera")
 API_URL = os.getenv("API_URL", f"http://localhost:8080/api")
-INTERNAL_TOKEN = os.getenv("INTERNAL_TOKEN", "internal-token-dev")
+INTERNAL_TOKEN = os.getenv("INTERNAL_TOKEN", "")
 MEDIAMTX_URL = os.getenv("MEDIAMTX_URL", "rtsp://mediamtx.local")
-POLL_INTERVAL = int(os.getenv("CONFIG_POLL_INTERVAL", 10))
+POLL_INTERVAL = int(os.getenv("CONFIG_POLL_INTERVAL", os.getenv("POLL_INTERVAL", 10)))
+HTTP_TIMEOUT = 5
 
 def register_camera(default_config):
     """
@@ -20,7 +21,9 @@ def register_camera(default_config):
     """
     headers = {"Authorization": f"Bearer {INTERNAL_TOKEN}"}
     try:
-        resp = requests.post(f"{API_URL}/cameras", json=default_config, headers=headers)
+        # La API modela fps/rotation como strings: enviarlos como tales para que el bind JSON no falle
+        payload = {k: (str(v) if k in ("fps", "rotation") else v) for k, v in default_config.items()}
+        resp = requests.post(f"{API_URL}/cameras", json=payload, headers=headers, timeout=HTTP_TIMEOUT)
         if resp.status_code == 201:
             print(f"Camera '{CAMERA_NAME}' registered with default config.")
         else:
@@ -41,7 +44,7 @@ def fetch_config(camera_name):
     config_url = f"{API_URL}/cameras/search?name={camera_name}"
     headers = {"Authorization": f"Bearer {INTERNAL_TOKEN}"}
     try:
-        resp = requests.get(config_url, headers=headers)
+        resp = requests.get(config_url, headers=headers, timeout=HTTP_TIMEOUT)
         configs = resp.json()
         if not configs:
             print(f"No config found for camera name '{camera_name}'")
@@ -80,7 +83,7 @@ def send_heartbeat(status_data):
     url = f"{API_URL}/cameras/heartbeat"
     headers = {"Authorization": f"Bearer {INTERNAL_TOKEN}"}
     try:
-        resp = requests.post(url, json=status_data, headers=headers, timeout=5)
+        resp = requests.post(url, json=status_data, headers=headers, timeout=HTTP_TIMEOUT)
         if resp.status_code == 200:
             return resp.json()
         else:

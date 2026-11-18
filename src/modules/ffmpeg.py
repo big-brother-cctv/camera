@@ -5,6 +5,17 @@ FFmpeg command utilities for all types of cameras (V4L2, IP RTSP, HTTP, Syntheti
 import subprocess
 from modules.config import CAMERA_NAME, MEDIAMTX_URL
 
+
+def to_int(value, default):
+    """
+    Parse ints coming from the API, which stores some numeric fields as strings
+    ("" when unset). Never raise: a bad value must not crash the agent loop.
+    """
+    try:
+        return int(str(value).strip())
+    except (TypeError, ValueError):
+        return default
+
 def build_cmd(config):
     """
     Build the ffmpeg command based on camera configuration.
@@ -23,14 +34,14 @@ def build_cmd(config):
     source_url = config.get("sourceUrl", "")
     device = config.get("device", "/dev/video0")
     resolution = config.get("resolution", "640x480")
-    fps = str(config.get("fps", 30))
+    fps = str(to_int(config.get("fps"), 30))
     camera_name = config.get("name", CAMERA_NAME)
     postUrl = f"{MEDIAMTX_URL}/{camera_name}"
     codec = config.get("codec", "libx264")
     preset = config.get("preset", "ultrafast")
     tune = config.get("tune", "zerolatency")
     buffer = str(config.get("buffer", "1000000"))
-    rotation = int(config.get("rotation", 0))
+    rotation = to_int(config.get("rotation"), 0)
 
     # Auto-detect source_type if not specified
     if not source_type or source_type == "v4l2":
